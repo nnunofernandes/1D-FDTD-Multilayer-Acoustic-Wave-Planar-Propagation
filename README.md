@@ -1,5 +1,7 @@
 # 1D FDTD Planar Acoustic Wave Propagation
+[![DOI](https://zenodo.org/badge/1248269950.svg)](https://doi.org/10.5281/zenodo.20445079)
 
+## Overview
 This repository contains a Python implementation of a one-dimensional finite-difference time-domain (FDTD) model for simulating planar acoustic wave propagation through layered media. The code was developed to support the numerical study of high-frequency ultrasound propagation through biological tissues and transducer-coupled material systems.
 
 The model is intended for exploratory simulation, parameter screening, and preliminary estimation of acoustic transmission through tissue-like layers. It can be adapted to different propagation paths by modifying the material stack, spatial discretization, excitation signal, and boundary conditions.
