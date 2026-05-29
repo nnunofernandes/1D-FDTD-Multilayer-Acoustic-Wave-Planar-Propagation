@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Apr 30 17:23:08 2025
-
-@author: nnuno
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -38,14 +32,12 @@ cart_thick = 0.0025
 # Simulation parameters
 L_visible = pzt_thick+match_thick+skin_thick+AT_thick+cart_thick
 L_total = 4*L_visible
-#Nx = 2400
 dx=c_skin/(100*freq)
 Nx=int((L_total)/dx)
 x = np.linspace(-2*L_visible, 2*L_visible, Nx)
-#dx = (L_visible + 0.12) / Nx
 
 # Time step and simulation duration
-c_max = c_pzt  # Maximum speed in bone
+c_max = c_pzt  
 CFL = 0.5
 dt = CFL * dx / c_max
 
@@ -108,26 +100,18 @@ skin_transducer_pos=np.argmin(np.abs(x - (pzt_thick+match_thick)))
 skin_AT_pos = np.argmin(np.abs(x - (pzt_thick+match_thick+skin_thick)))
 AT_cart_pos = np.argmin(np.abs(x - (pzt_thick+match_thick+skin_thick+AT_thick)))
 cart_pos = np.argmin(np.abs(x - (pzt_thick+match_thick+skin_thick+AT_thick+0.00125)))
-#brain_10_pos = np.argmin(np.abs(x - (pzt_thick+match_thick+skin_thick+bone_thick+0.01)))
-#brain_15_pos = np.argmin(np.abs(x - L_visible))
 skin_transducer_signal = []
 skin_AT_signal = []
 AT_cart_signal = []
 cart_signal = []
-#brain_10_signal = []
-#brain_15_signal = []
 
-# Source signal (smooth full sine wave)
+# Source signal 
 source_amplitude = 10
-#n_source = int(T_period / dt)
-#window = np.hanning(2 * n_source)
-#smooth_source = source_amplitude * window[:n_source] * np.sin(2 * np.pi * freq * np.arange(n_source) * dt)
 
 # Plot setup
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [4, 3]})
 line, = ax1.plot(x * 1000, np.abs(p) + 1e-12)
 ax1.set_xlim(0, L_visible * 1000)
-#ax1.set_yscale('log')
 ax1.set_ylim(-15, 15)
 ax1.set_xlabel("Position [mm]")
 ax1.set_ylabel("Pressure Amplitude [Pa]")
@@ -145,10 +129,7 @@ time_series_line1, = ax2.plot([], [], label="Transducer-Skin")
 time_series_line2, = ax2.plot([], [], label="Skin-Adipose Tissue")
 time_series_line3, = ax2.plot([], [], label="Adipose Tissue-Cartilage")
 time_series_line4, = ax2.plot([], [], label="Cartilage @ 1.25 mm")
-#time_series_line5, = ax2.plot([], [], label="Brain @ 10 mm")
-#time_series_line6, = ax2.plot([], [], label="Brain @ 15 mm")
 ax2.set_xlim(0, T_sim * 1e6)
-#ax2.set_yscale('log')
 ax2.set_ylim(-2, 2)
 ax2.set_xlabel("Time [µs]")
 ax2.set_ylabel("Pressure [Pa]")
@@ -166,15 +147,11 @@ def update(frame):
 
     # Apply attenuation to pressure field
     p *= (1 - gamma)
-    #p *= geo_corr
     
     # Filter low-amplitude noise
     p[np.abs(p) < 1e-7] = 0.0
-    #p[1:-1] = 0.25 * p[:-2] + 0.5 * p[1:-1] + 0.25 * p[2:]
     
     # Source injection
-    #if frame < len(smooth_source):
-        #p[source_pos] = smooth_source[frame]
     if T_period>(frame*dt):
         v[source_pos] = source_amplitude*np.sin(2*np.pi*freq*frame*dt)/rho[source_pos]/c[source_pos]
     elif 2*T_period>(frame*dt):
@@ -185,8 +162,6 @@ def update(frame):
     skin_AT_signal.append(p[skin_AT_pos])
     AT_cart_signal.append(p[AT_cart_pos])
     cart_signal.append(p[cart_pos])
-    #brain_10_signal.append(p[brain_10_pos])
-    #brain_15_signal.append(p[brain_15_pos])
 
     # Update plot
     line.set_ydata(p)
@@ -199,8 +174,6 @@ def update(frame):
     time_series_line2.set_data(t, skin_AT_signal)
     time_series_line3.set_data(t, AT_cart_signal)
     time_series_line4.set_data(t, cart_signal)
-    #time_series_line5.set_data(t, brain_10_signal)
-    #time_series_line6.set_data(t, brain_15_signal)
     # Save as DataFrame
     if frame==(Nt-1):
         df = pd.DataFrame({
