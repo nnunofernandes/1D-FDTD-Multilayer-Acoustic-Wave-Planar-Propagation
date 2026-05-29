@@ -28,10 +28,23 @@ The model is particularly useful when the main objective is to estimate how much
 
 The implemented method follows the finite-difference time-domain approach for acoustic wave propagation. In this formulation, the continuous acoustic wave equation is discretized in space and time, allowing the pressure field to be updated iteratively.
 
-In a simplified linear acoustic formulation, the pressure field may be represented by:
+<img width="4082" height="1744" alt="FDTD" src="https://github.com/user-attachments/assets/8f20a8b2-ed87-4cbc-8967-07666c6c5fed" />
+
+
+In a simplified linear acoustic formulation, the pressure and velocity field may be represented by the system of couple equations:
 
 ```math
-\frac{\partial^2 p}{\partial t^2} = c^2 \frac{\partial^2 p}{\partial x^2},
+    c^{n+\frac{1}{2}}_i=
+    c_i^{n-\frac{1}{2}}-
+    (p_{i+1}^n -p_i^n)
+    \cdot \frac{\Delta t}{\rho _i \cdot \Delta x} ,
+```
+
+```math
+    p^{n+\frac{1}{2}}_i=
+    c_i^n-
+    (c_{i+1}^{n+\frac{1}{2}} -c_i^{n+\frac{1}{2}})
+    \cdot \frac{\Delta t \cdot K_i}{\Delta x} 
 ```
 
 where:
@@ -202,6 +215,30 @@ For this reason, the model should be interpreted as a rapid computational screen
 ## Recommended citation
 
 If you use this code, method, or adapted versions of this script, please cite:
+```bibtex
+@software{fernandes_1D_FDTD_Multilayer,
+  author       = {Fernandes, Nuno A. T. C.},
+  title        = {1D FDTD Planar Acoustic Wave Propagation},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.20445080},
+  url          = {https://doi.org/10.5281/zenodo.20445080}
+}
+
+@incollection{Fernandes2026FDTD,
+  author    = {Fernandes, Nuno A. T. C. and Arieira, A. and Hinckel, B. and Silva, F. and Leal, A. and Carvalho, {\'O}.},
+  title     = {A Python FDTD Method Algorithm for 1D Planar Acoustic Wave Propagation: Simulating High-Frequency Ultrasound in the Brain and Beyond},
+  booktitle = {Proceedings of ICOVP and WMVC 2025},
+  editor    = {Dimitrovov{\'a}, Z. and Biswas, P. and Silva, T. A. N.},
+  series    = {Mechanisms and Machine Science},
+  volume    = {197},
+  publisher = {Springer},
+  address   = {Cham},
+  year      = {2026},
+  doi       = {10.1007/978-3-032-13225-3_39}
+}
+```
+
 
 ```bibtex
 @incollection{Fernandes2026FDTD,
