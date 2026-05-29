@@ -52,9 +52,12 @@ where:
 - `p` is the acoustic pressure;
 - `c` is the speed of sound in the medium;
 - `x` is the propagation coordinate;
+- `K` is the bulk modulus;
 - `t` is time.
 
 For heterogeneous domains, the acoustic properties vary spatially. The script therefore assigns each point of the domain to a material layer with its own speed of sound, density, acoustic impedance, and attenuation-related parameters, depending on the level of detail used in the simulation.
+
+The user can place several proves across the domains so that it can track in the time domain the pressure variation.
 
 The model is based on the methodological framework described in:
 
